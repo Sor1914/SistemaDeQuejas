@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActualizaQueja" xml:space="preserve">
+    <value>UPDATE Encabezado_Queja SET Id_Estado_Externo = {0}, Id_Estado_Interno = {1}, JUSTIFICACION = '{3}', Respuesta = '{4}', Id_Punto_Atencion = {5}
+WHERE Id_Encabezado = {6}</value>
+  </data>
+  <data name="ActualizarEstadoQueja" xml:space="preserve">
+    <value>UPDATE Encabezado_Queja SET Id_Estado_Externo = {0}, Id_Estado_Interno = {1}, JUSTIFICACION = '{2}' WHERE Id_Encabezado = {3}</value>
+  </data>
+  <data name="ActualizarPuntoEstadoQueja" xml:space="preserve">
+    <value>UPDATE Encabezado_Queja SET Id_Punto_Atencion = {0}, Id_Estado_Externo = {1}, Id_Estado_Interno = {2}
+WHERE Id_Encabezado = {3}</value>
+  </data>
+  <data name="InsertaDetalleQueja" xml:space="preserve">
+    <value>INSERT INTO Detalle_Queja(Id_Encabezado, Comentario, Direccion_Archivo, Fecha_Detalle, Id_Usuario)
+VALUES ({0}, '{1}', '{2}', CURRENT_TIMESTAMP, '{3}')</value>
+  </data>
+  <data name="ObtieneCorrelativoPorId" xml:space="preserve">
+    <value>SELECT Encabezado_Queja.CORRELATIVO, Tipo_Queja.Siglas_Tipo FROM Encabezado_Queja 
+INNER JOIN Tipo_Queja
+	ON Encabezado_Queja.Id_Tipo = Tipo_Queja.Id_Tipo
+WHERE Id_Encabezado = {0}</value>
+  </data>
+  <data name="ObtieneDetalleQueja" xml:space="preserve">
+    <value>SELECT * FROM Detalle_Queja
+where Detalle_Queja.Id_Encabezado = {0} ORDER BY Fecha_Detalle DESC</value>
+  </data>
+  <data name="ObtieneEmailPuntoAtención" xml:space="preserve">
+    <value>SELECT Email FROM USUARIO WHERE Id_Punto_Atencion = {0} AND Id_Cargo IN (2,3,4,5,7) AND ESTADO = 'A'</value>
+  </data>
+  <data name="ObtieneEncabezadoQueja" xml:space="preserve">
+    <value>SELECT Encabezado_Queja.*, EstadoExterno.Nombre AS Estado_Externo,
+EstadoInterno.Nombre AS Estado_Interno, Region.Nombre_Region, Punto_Atencion.Nombre_Punto_Atencion,  Direccion_Archivo FROM Encabezado_Queja
+INNER JOIN Estado EstadoExterno
+	ON Id_Estado_Externo = EstadoExterno.Id_Estado
+INNER JOIN Estado EstadoInterno
+	ON Id_Estado_Externo = EstadoInterno.Id_Estado
+INNER JOIN Punto_Atencion
+	ON Encabezado_Queja.Id_Punto_Atencion = Punto_Atencion.Id_Punto_Atencion
+INNER JOIN Region
+	ON Punto_Atencion.Id_Region = REGION.Id_Region
+WHERE Id_Encabezado = {0}</value>
+  </data>
+  <data name="ObtieneEncabezadoQuejaPorCorrelativo" xml:space="preserve">
+    <value>SELECT Encabezado_Queja.*, EstadoExterno.Nombre AS Estado_Externo,
+EstadoInterno.Nombre AS Estado_Interno, Region.Nombre_Region, Punto_Atencion.Nombre_Punto_Atencion,  Direccion_Archivo FROM Encabezado_Queja
+INNER JOIN Estado EstadoExterno
+	ON Id_Estado_Externo = EstadoExterno.Id_Estado
+INNER JOIN Estado EstadoInterno
+	ON Id_Estado_Externo = EstadoInterno.Id_Estado
+INNER JOIN Punto_Atencion
+	ON Encabezado_Queja.Id_Punto_Atencion = Punto_Atencion.Id_Punto_Atencion
+INNER JOIN Region
+	ON Punto_Atencion.Id_Region = REGION.Id_Region
+WHERE Correlativo = '{0}'</value>
+  </data>
+  <data name="ObtieneQuejasAsignacion" xml:space="preserve">
+    <value>SELECT Id_Encabezado, Correlativo, 
+Fecha_Ingreso AS Fecha,
+Correlativo
+FROM Encabezado_Queja WHERE Id_Estado_Externo = 1 AND Id_Estado_Interno = 1</value>
+  </data>
+  <data name="ObtieneQuejasCent" xml:space="preserve">
+    <value>SELECT Id_Encabezado, Correlativo, 
+Fecha_Ingreso AS Fecha, Id_Estado_Interno, Estado.Nombre AS Estado_Interno, Encabezado_Queja.Detalle
+FROM Encabezado_Queja 
+INNER JOIN USUARIO
+	ON Encabezado_Queja.Id_Punto_Atencion = USUARIO.Id_Punto_Atencion
+INNER JOIN Estado
+	ON Encabezado_Queja.Id_Estado_Interno = ESTADO.Id_Estado
+WHERE Id_Estado_Externo = 4 AND Id_Estado_Interno IN (7) 
+AND USUARIO.Usuario = '{0}'</value>
+  </data>
+  <data name="ObtieneQuejasPuntoAtencion" xml:space="preserve">
+    <value>SELECT Id_Encabezado, Correlativo, 
+Fecha_Ingreso AS Fecha, Id_Estado_Interno, Estado.Nombre  AS Estado_Interno, Encabezado_Queja.Detalle
+FROM Encabezado_Queja 
+INNER JOIN USUARIO
+	ON Encabezado_Queja.Id_Punto_Atencion = USUARIO.Id_Punto_Atencion
+INNER JOIN Estado
+	ON Encabezado_Queja.Id_Estado_Interno = ESTADO.Id_Estado
+WHERE Id_Estado_Externo = 4 AND Id_Estado_Interno IN (2,5,8)  AND USUARIO.Usuario = '{0}'</value>
+  </data>
+</root>
