@@ -1,6 +1,7 @@
 export type Usuario = {
   Id_Usuario: number;
   Nombres: string;
+  USUARIO: string;
   Apellidos: string;
   CUI: string;
   Id_Rol?: number;

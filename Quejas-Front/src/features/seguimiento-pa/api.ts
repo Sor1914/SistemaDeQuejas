@@ -2,8 +2,10 @@
 import { axiosClient } from '../../lib/axiosClient';
 import type { DetalleQueja, EncabezadoQueja, EstadoPayload } from './types';
 
+// Normalizadores seguros
 const toArray = <T,>(x: any): T[] => (Array.isArray(x) ? x : []);
-
+const toArrayLoose = <T,>(x: any): T[] =>
+  Array.isArray(x) ? x : (x && typeof x === 'object' ? [x as T] : []);
 
 export async function obtenerQuejasPA(token: string) {
   const resp = await axiosClient.get<EncabezadoQueja[]>(
@@ -20,17 +22,19 @@ export async function obtenerEncabezadoQueja(token: string, idEncabezado: number
     body,
     { headers: { Authorization: `Bearer ${token}` }, validateStatus: s => s < 500 }
   );
+  // Si viene arreglo, regresa el primero; si no, null
   return status === 302 && Array.isArray(data) && data.length ? data[0] : null;
 }
 
 export async function obtenerDetalleQueja(token: string, idEncabezado: number) {
   const body = { Id_Encabezado: idEncabezado };
-  const { data, status } = await axiosClient.post<DetalleQueja[]>(
+  const { data } = await axiosClient.post<DetalleQueja[] | DetalleQueja | null>(
     '/API/SEGUIMIENTO/ObtenerDetalleQueja',
     body,
     { headers: { Authorization: `Bearer ${token}` }, validateStatus: s => s < 500 }
   );
-  return status === 302 ? (data ?? []) : (data ?? []);
+  // Siempre regresa un arreglo (aunque el backend mande objeto único o null)
+  return toArrayLoose<DetalleQueja>(data);
 }
 
 export async function agregarDetalleQueja(

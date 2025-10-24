@@ -39,7 +39,7 @@ export default function UsuariosPage() {
   const filtered = useMemo(() => {
     const s = q.trim().toUpperCase();
     if (!s) return rows;
-    return rows.filter(x => (`${x.Nombres} ${x.Apellidos}`.trim()).toUpperCase().includes(s));
+    return rows.filter(x => (`${x.NOMBRES} ${x.APELLIDOS}`.trim()).toUpperCase().includes(s));
   }, [rows, q]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -107,7 +107,7 @@ export default function UsuariosPage() {
                   ) : (
                     pageData.map(row => (
                       <tr key={row.Id_Usuario} className="border-t" style={{ borderColor: 'var(--border)' }}>
-                        <td className="px-3 py-2">{row.Nombres} {row.Apellidos}</td>
+                        <td className="px-3 py-2">{row.NOMBRES} {row.APELLIDOS}</td>
                         <td className="px-3 py-2">{row.CUI}</td>
                         <td className="px-3 py-2">{row.Nombre_Rol}</td>
                         <td className="px-3 py-2">{row.Departamento ?? ''}</td>
@@ -253,7 +253,7 @@ function ModalEditarRol({
         <div>
           <label className="block text-sm mb-1">Nombre</label>
           <div className="input" style={{ pointerEvents: 'none' }}>
-            {row.Nombres} {row.Apellidos}
+            {row.NOMBRES} {row.APELLIDOS}
           </div>
         </div>
         <div>

@@ -187,10 +187,7 @@ export default function MainLayout() {
             </a>
             <a href="#mision-vision" className="hover:underline">
               Misión & Visión
-            </a>
-            <a href="#contacto" className="hover:underline">
-              Contacto
-            </a>
+            </a>            
             <a href="#inicio" className="hover:underline">
               Inicio
             </a>
@@ -200,9 +197,6 @@ export default function MainLayout() {
             <a href="#mision-vision" className="hover:underline">
               Visión
             </a>
-            <Link to="/login" className="hover:underline">
-              Login
-            </Link>
           </nav>
         </div>
       </header>
@@ -295,57 +289,12 @@ export default function MainLayout() {
                         >
                           Relacionar Usuarios con PA
                         </Link>
-                        )}
-                        {permisos?.CatalogoQuejas && (
-                          <button className="block w-full text-left px-3 py-2 rounded hover:bg-[var(--hover)]">
-                            Catálogo de quejas
-                          </button>
-                        )}
+                        )}                        
                       </div>
                     )}
                   </>
                 )}
-
-                {/* Grupo: Ingresos */}
-                {hasAny(permisos, [
-                  "IngresoQuejasUsuario",
-                  "IngresoQuejasCliente",
-                ]) && (
-                  <>
-                    <button
-                      className="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-[var(--hover)]"
-                      onClick={() => setGrpReportes((v) => !v)}
-                      aria-expanded={grpReportes}
-                      aria-controls="grp-ingresos"
-                    >
-                      <span className="font-medium">Ingresos</span>
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        className={`${
-                          grpReportes ? "rotate-90" : ""
-                        } transition-transform`}
-                      >
-                        <path fill="currentColor" d="m10 17l5-5l-5-5v10z" />
-                      </svg>
-                    </button>
-                    {grpReportes && (
-                      <div id="grp-ingresos" className="ml-2 space-y-1">
-                        {permisos?.IngresoQuejasUsuario && (
-                          <button className="block w-full text-left px-3 py-2 rounded hover:bg-[var(--hover)]">
-                            Ingreso – Usuario
-                          </button>
-                        )}
-                        {permisos?.IngresoQuejasCliente && (
-                          <button className="block w-full text-left px-3 py-2 rounded hover:bg-[var(--hover)]">
-                            Ingreso – Cliente
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </>
-                )}
+                
 
                 {/* Grupo: Seguimiento */}
                 {hasAny(permisos, [
@@ -370,12 +319,7 @@ export default function MainLayout() {
                         >
                           Asignación
                         </Link>
-                      )}
-                      {permisos?.SeguimientoCentralizador && (
-                        <button className="block w-full text-left px-3 py-2 rounded hover:bg-[var(--hover)]">
-                          Centralizador
-                        </button>
-                      )}
+                      )}                     
                       {permisos?.SeguimientoPuntoAtencion && (
                        <Link
                           to="seguimiento/pa"
@@ -396,22 +340,7 @@ export default function MainLayout() {
                       )}
                     </div>
                   </>
-                )}
-
-                {/* Reportes */}
-                {permisos?.Reporte && (
-                  <>
-                    <div
-                      className="mt-2 text-xs uppercase tracking-wide"
-                      style={{ color: "var(--muted)" }}
-                    >
-                      Reportes
-                    </div>
-                    <button className="mt-1 block w-full text-left px-3 py-2 rounded hover:bg-[var(--hover)]">
-                      Dashboard / KPIs
-                    </button>
-                  </>
-                )}
+                )}                
 
                 {/* Usuarios */}
                 {permisos?.Usuarios && (
@@ -441,7 +370,19 @@ export default function MainLayout() {
           <div className="w-full px-4 sm:px-6 lg:px-8">
             <Outlet />
           </div>
-          <ToastHost />
+          <div
+    className="
+      fixed inset-0 z-[90]
+      pointer-events-none
+      flex items-center justify-center
+      p-4
+    "
+  >
+    {/* Los toasts mantienen interactividad */}
+    <div className="pointer-events-auto">
+      <ToastHost />
+    </div>
+  </div>
           <footer className="mt-12 hr" style={{ background: "var(--surface)" }}>
             <div className="mx-auto w-full max-w-[1200px] lg:max-w-[1400px] 2xl:max-w-[1600px] px-4 sm:px-6 lg:px-8 py-6 text-sm flex flex-col md:flex-row items-center justify-between gap-3"></div>
             <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
