@@ -22,7 +22,7 @@ export default function AutoconsultaPage() {
   const [open, setOpen] = useState(false);
   const [resultado, setResultado] = useState<any>(null);
 
-  const { register, handleSubmit, formState: { errors, isSubmitting }, watch, setValue } =
+  const { register, handleSubmit, formState: { errors, isSubmitting } } =
     useForm<FormValues>({
       resolver: zodResolver(schema),
       defaultValues: { TipoId: 0, Numero: '', Anio: String(new Date().getFullYear()) }

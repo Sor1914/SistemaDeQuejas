@@ -3,12 +3,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../features/auth/AuthContext";
 import {
   actualizarDatosUsuario,
-  obtenerCargos,
   obtenerPuntos,
   obtenerRegiones,
   obtenerUsuarioPorCui,
   obtenerUsuarios,
-  type Cargo,
   type Punto,
   type Region,
   type UsuarioPunto,
@@ -27,10 +25,12 @@ type FormDTO = {
   Email: string;
   Id_Region?: number;
   Id_Punto_Atencion?: number;
-  Id_Cargo?: number;
+  // Cargo se envía fijo desde el padre
 };
 
 const PAGE_SIZE = 5;
+// Cargo fijo a usar en crear/editar:
+const FIXED_CARGO_ID = 2;
 
 export default function UsuarioPuntoAtencionPage() {
   const { token } = useAuth();
@@ -38,7 +38,6 @@ export default function UsuarioPuntoAtencionPage() {
   const [loading, setLoading] = useState(true);
   const [regiones, setRegiones] = useState<Region[]>([]);
   const [puntos, setPuntos] = useState<Punto[]>([]);
-  const [cargos, setCargos] = useState<Cargo[]>([]);
   const [usuarios, setUsuarios] = useState<UsuarioPunto[]>([]);
 
   // filtros
@@ -54,15 +53,13 @@ export default function UsuarioPuntoAtencionPage() {
     if (!token) return;
     (async () => {
       setLoading(true);
-      const [r, p, c, u] = await Promise.all([
+      const [r, p, u] = await Promise.all([
         obtenerRegiones(token),
         obtenerPuntos(token),
-        obtenerCargos(token),
         obtenerUsuarios(token),
       ]);
       setRegiones(r);
       setPuntos(p);
-      setCargos(c);
       setUsuarios(u);
       setLoading(false);
     })();
@@ -105,7 +102,7 @@ export default function UsuarioPuntoAtencionPage() {
     setUsuarios(u);
   }
 
-  // acciones
+  // acciones (crea/edita con Id_Cargo fijo = 2)
   async function guardarNuevo(form: FormDTO) {
     if (!token) return;
     const ok = await actualizarDatosUsuario(token, {
@@ -114,7 +111,7 @@ export default function UsuarioPuntoAtencionPage() {
       Email: form.Email,
       Id_Region: form.Id_Region!,
       Id_Punto_Atencion: form.Id_Punto_Atencion!,
-      Id_Cargo: form.Id_Cargo!,
+      Id_Cargo: FIXED_CARGO_ID, // ← fijo a 2
       Apellidos: "",
       Usuario: "",
     });
@@ -138,7 +135,7 @@ export default function UsuarioPuntoAtencionPage() {
       Email: original.Email,
       Id_Region: form.Id_Region!,
       Id_Punto_Atencion: form.Id_Punto_Atencion!,
-      Id_Cargo: form.Id_Cargo!,
+      Id_Cargo: FIXED_CARGO_ID, // ← fijo a 2
       Apellidos: original.Apellidos ?? "",
       Usuario: original.Usuario ?? "",
     });
@@ -156,7 +153,7 @@ export default function UsuarioPuntoAtencionPage() {
 
   async function eliminarRegistro(reg: UsuarioPunto) {
     if (!token) return;
-    // “Eliminar” → desasignar: Id_Punto_Atencion = 1, Id_Cargo = 1 (como en tu MVC)
+    // Desasignar: Punto = 1, Cargo = 1 (como en tu MVC)
     const ok = await actualizarDatosUsuario(token, {
       Cui: reg.Cui,
       Nombres: reg.Nombres,
@@ -191,7 +188,10 @@ export default function UsuarioPuntoAtencionPage() {
           }}
         >
           {/* Header */}
-          <div className="p-4 border-b" style={{ borderColor: "var(--border)" }}>
+          <div
+            className="p-4 border-b"
+            style={{ borderColor: "var(--border)" }}
+          >
             <div className="flex items-center justify-between">
               <h1 className="text-lg font-semibold">
                 Usuarios - Puntos de Atención
@@ -413,7 +413,6 @@ export default function UsuarioPuntoAtencionPage() {
             token={token}
             regiones={regiones}
             puntos={puntos}
-            cargos={cargos}
             onGuardar={guardarNuevo}
             onClose={() => setModal({ type: "none" })}
           />
@@ -424,7 +423,6 @@ export default function UsuarioPuntoAtencionPage() {
             registro={modal.registro}
             regiones={regiones}
             puntos={puntos}
-            cargos={cargos}
             onGuardar={(f) => guardarEdicion(f, modal.registro)}
             onClose={() => setModal({ type: "none" })}
           />
@@ -525,14 +523,12 @@ function ModalNuevo({
   token,
   regiones,
   puntos,
-  cargos,
   onGuardar,
   onClose,
 }: {
   token: string | null;
   regiones: Region[];
   puntos: Punto[];
-  cargos: Cargo[];
   onGuardar: (f: FormDTO) => void | Promise<void>;
   onClose: () => void;
 }) {
@@ -544,7 +540,6 @@ function ModalNuevo({
   const [errorCui, setErrorCui] = useState("");
   const [idRegion, setIdRegion] = useState<number | "">("");
   const [idPunto, setIdPunto] = useState<number | "">("");
-  const [idCargo, setIdCargo] = useState<number | "">("");
 
   const puntosReg = useMemo(
     () => (idRegion ? puntos.filter((p) => p.IdRegion === idRegion) : []),
@@ -577,8 +572,7 @@ function ModalNuevo({
     }));
   }
 
-  const canSave =
-    !!form.Cui && !errorCui && !!idRegion && !!idPunto && !!idCargo;
+  const canSave = !!form.Cui && !errorCui && !!idRegion && !!idPunto;
 
   return (
     <Frame
@@ -597,7 +591,6 @@ function ModalNuevo({
                 ...form,
                 Id_Region: idRegion as number,
                 Id_Punto_Atencion: idPunto as number,
-                Id_Cargo: idCargo as number,
               })
             }
           >
@@ -664,7 +657,9 @@ function ModalNuevo({
           <select
             value={idRegion}
             onChange={(e) => {
-              setIdRegion(e.target.value ? Number(e.target.value) : ("" as any));
+              setIdRegion(
+                e.target.value ? Number(e.target.value) : ("" as any)
+              );
               setIdPunto("");
             }}
             className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2"
@@ -705,28 +700,6 @@ function ModalNuevo({
             ))}
           </select>
         </div>
-        <div>
-          <label className="block text-sm mb-1">Cargo</label>
-          <select
-            value={idCargo}
-            onChange={(e) =>
-              setIdCargo(e.target.value ? Number(e.target.value) : ("" as any))
-            }
-            className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2"
-            style={{
-              borderColor: "var(--border)",
-              background: "var(--surface)",
-              color: "var(--ink)",
-            }}
-          >
-            <option value="">Seleccionar cargo</option>
-            {cargos.map((c) => (
-              <option key={c.id_Area} value={c.id_Area}>
-                {c.Nombre_Cargo}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
     </Frame>
   );
@@ -737,14 +710,12 @@ function ModalEditar({
   registro,
   regiones,
   puntos,
-  cargos,
   onGuardar,
   onClose,
 }: {
   registro: UsuarioPunto;
   regiones: Region[];
   puntos: Punto[];
-  cargos: Cargo[];
   onGuardar: (f: FormDTO) => void | Promise<void>;
   onClose: () => void;
 }) {
@@ -754,13 +725,12 @@ function ModalEditar({
   const [idPunto, setIdPunto] = useState<number | "">(
     registro.Id_Punto_Atencion ?? ""
   );
-  const [idCargo, setIdCargo] = useState<number | "">(registro.Id_Cargo ?? "");
   const puntosReg = useMemo(
     () => (idRegion ? puntos.filter((p) => p.IdRegion === idRegion) : []),
     [idRegion, puntos]
   );
 
-  const canSave = !!idRegion && !!idPunto && !!idCargo;
+  const canSave = !!idRegion && !!idPunto;
 
   return (
     <Frame
@@ -781,7 +751,6 @@ function ModalEditar({
                 Email: registro.Email,
                 Id_Region: idRegion as number,
                 Id_Punto_Atencion: idPunto as number,
-                Id_Cargo: idCargo as number,
               })
             }
           >
@@ -835,7 +804,9 @@ function ModalEditar({
           <select
             value={idRegion}
             onChange={(e) => {
-              setIdRegion(e.target.value ? Number(e.target.value) : ("" as any));
+              setIdRegion(
+                e.target.value ? Number(e.target.value) : ("" as any)
+              );
               setIdPunto("");
             }}
             className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2"
@@ -872,28 +843,6 @@ function ModalEditar({
             {puntosReg.map((p) => (
               <option key={p.Id} value={p.Id}>
                 {p.NombrePuntoAtencion}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Cargo</label>
-          <select
-            value={idCargo}
-            onChange={(e) =>
-              setIdCargo(e.target.value ? Number(e.target.value) : ("" as any))
-            }
-            className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2"
-            style={{
-              borderColor: "var(--border)",
-              background: "var(--surface)",
-              color: "var(--ink)",
-            }}
-          >
-            <option value="">Seleccionar cargo</option>
-            {cargos.map((c) => (
-              <option key={c.id_Area} value={c.id_Area}>
-                {c.Nombre_Cargo}
               </option>
             ))}
           </select>

@@ -191,6 +191,7 @@
     <Compile Include="Clases\clsTipoQueja.cs" />
     <Compile Include="Clases\clsUsuarioPuntoAtencion.cs" />
     <Compile Include="Clases\clsUsuarios.cs" />
+    <Compile Include="Controllers\RoutesDebugController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PuntosAtencionController.cs" />
     <Compile Include="Controllers\QuejaController.cs" />

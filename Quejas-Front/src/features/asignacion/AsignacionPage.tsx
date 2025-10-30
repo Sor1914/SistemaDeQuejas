@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from "../../features/auth/AuthContext";
-import {axiosClient} from '../../lib/axiosClient';
-import type { AxiosInstance } from 'axios';
-
+import { axiosClient } from '../../lib/axiosClient';
 
 /* ========= Tipos ========= */
 type Row = {
@@ -80,13 +78,8 @@ function InfoBadge(props: React.SVGProps<SVGSVGElement>) {
 export default function AsignacionPage() {
   const { token } = useAuth();
 
-  const api = useMemo<AxiosInstance>(() => {
-    const instance = axiosClient.create({
-      baseURL: import.meta.env.VITE_API_BASE || "http://localhost:61342",
-      validateStatus: (s) => s >= 200 && s < 400,
-    });
-    return instance;
-  }, []);
+  // ✅ Usamos directamente la instancia configurada globalmente
+  const api = axiosClient;
 
   const authHeaders = useMemo(
     () => ({ Authorization: token ? `Bearer ${token}` : "" }),
@@ -133,6 +126,8 @@ export default function AsignacionPage() {
     try {
       const r = await api.get("/API/SEGUIMIENTO/ObtenerQuejasAsignacion", {
         headers: authHeaders,
+        // Acepta 2xx y 3xx si tu backend usa 302
+        validateStatus: (s) => s >= 200 && s < 400,
       });
       setRows((r.data as Row[]) || []);
       setPage(1);
@@ -145,7 +140,8 @@ export default function AsignacionPage() {
 
   useEffect(() => {
     refreshRows();
-  }, []); // eslint-disable-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // catálogos para Asignar
@@ -154,11 +150,15 @@ export default function AsignacionPage() {
         const [rg, pt] = await Promise.all([
           api.get("/API/USUARIOPUNTOATENCION/ObtenerRegiones", {
             headers: authHeaders,
+            validateStatus: (s) => s >= 200 && s < 400,
           }),
           api.post(
             "/API/USUARIOPUNTOATENCION/ObtenerPuntos",
             {},
-            { headers: { ...authHeaders, "Content-Type": "application/json" } }
+            {
+              headers: { ...authHeaders, "Content-Type": "application/json" },
+              validateStatus: (s) => s >= 200 && s < 400,
+            }
           ),
         ]);
         setRegiones(rg.data as Region[]);
@@ -183,7 +183,10 @@ export default function AsignacionPage() {
       const r = await api.post(
         "/API/SEGUIMIENTO/ObtenerEncabezadoQueja",
         body,
-        { headers: { ...authHeaders, "Content-Type": "application/json" } }
+        {
+          headers: { ...authHeaders, "Content-Type": "application/json" },
+          validateStatus: (s) => s >= 200 && s < 400,
+        }
       );
       const arr = (r.data as EncabezadoDetalle[]) || [];
       if (!arr[0]) return toast("warn", "No se encontró la queja.");
@@ -204,6 +207,7 @@ export default function AsignacionPage() {
           headers: authHeaders,
           params: { direccionArchivo: url },
           responseType: "blob",
+          validateStatus: (s) => s >= 200 && s < 400,
         }
       );
       const blob = new Blob([r.data]);
@@ -238,6 +242,7 @@ export default function AsignacionPage() {
 
       const r = await api.post("/API/SEGUIMIENTO/InsertarDetalleQueja", form, {
         headers: { ...authHeaders },
+        validateStatus: (s) => s >= 200 && s < 400,
       });
       if (r.status >= 200 && r.status < 300) {
         toast("success", "Detalle guardado.");
@@ -260,9 +265,7 @@ export default function AsignacionPage() {
     setOpenAsignar(true);
   }
 
-  const puntosDeRegion = puntos.filter(
-    (p) => (selRegion || 0) === p.IdRegion
-  );
+  const puntosDeRegion = puntos.filter((p) => (selRegion || 0) === p.IdRegion);
 
   async function saveAsignacion() {
     if (!asignarForId) return;
@@ -280,7 +283,10 @@ export default function AsignacionPage() {
       const r = await api.post(
         "/API/SEGUIMIENTO/ActualizarPuntoEstadoQueja",
         body,
-        { headers: { ...authHeaders, "Content-Type": "application/json" } }
+        {
+          headers: { ...authHeaders, "Content-Type": "application/json" },
+          validateStatus: (s) => s >= 200 && s < 400,
+        }
       );
       if (r.status >= 200 && r.status < 300) {
         toast("success", "La información se almacenó correctamente.");
@@ -303,8 +309,7 @@ export default function AsignacionPage() {
 
   async function saveRechazo() {
     if (!rechazarForId) return;
-    if (!rechazoJust.trim())
-      return toast("warn", "Escribe la justificación.");
+    if (!rechazoJust.trim()) return toast("warn", "Escribe la justificación.");
 
     try {
       const body = {
@@ -315,6 +320,7 @@ export default function AsignacionPage() {
       };
       const r = await api.post("/API/SEGUIMIENTO/ActualizarEstadoQueja", body, {
         headers: { ...authHeaders, "Content-Type": "application/json" },
+        validateStatus: (s) => s >= 200 && s < 400,
       });
       if (r.status >= 200 && r.status < 300) {
         toast("success", "La información se almacenó correctamente.");
