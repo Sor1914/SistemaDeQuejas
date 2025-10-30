@@ -6,7 +6,7 @@ export default function HomePage() {
 
   // recordatorio: los logos del carrusel están en /public/img/empresas/empresa{1..5}.webp
   const slides = useMemo(
-    () => [1, 2, 3, 4, 5].map((n) => `${import.meta.env.BASE_URL}img/empresas/empresa${n}.webp`),
+    () => [1, 2, 3, 4, 5].map((n) => `${import.meta.env.BASE_URL}img/empresas/empresa${n}.png`),
     []
   );
 
